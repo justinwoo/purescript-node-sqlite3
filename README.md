@@ -7,3 +7,15 @@ Of course, this is nowhere near done, so please suggest improvements and additio
 ## Installation
 
 `bower i -S purescript-node-sqlite3 && npm i -S sqlite3`
+
+## Usage
+
+```haskell
+launchAff do
+  conn <- newDB "./data"
+
+  exists <- (\rows -> 1 == length rows) <$> queryDB conn "SELECT 1 from foods where name = ?" ["gulerodskage-med-flødest"]
+  log $ "do we have this?: " <> (show exists)
+
+  closeDB conn
+```
