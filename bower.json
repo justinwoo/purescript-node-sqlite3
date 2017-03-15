@@ -1,6 +1,10 @@
 {
   "name": "purescript-node-sqlite3",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/justinwoo/purescript-node-sqlite3"
+   },
   "ignore": [
     "**/.*",
     "node_modules",
