@@ -1,5 +1,6 @@
 {
   "name": "purescript-node-sqlite3",
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
