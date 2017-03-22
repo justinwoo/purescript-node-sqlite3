@@ -28,12 +28,12 @@ foreign import _queryDB :: forall e.
     DBConnection
     Query
     (Array Param)
-    (Array Foreign -> Eff (db :: DBEffects | e) Unit)
+    (Foreign -> Eff (db :: DBEffects | e) Unit)
   (Eff (db :: DBEffects | e) Unit)
 
 newDB :: forall e. FilePath -> Aff (db :: DBEffects | e) DBConnection
 newDB path = makeAff (\e s -> runFn2 _newDB path s)
 closeDB :: forall e. DBConnection -> Aff (db :: DBEffects | e) Unit
 closeDB conn = makeAff (\e s -> runFn2 _closeDB conn s)
-queryDB :: forall e. DBConnection -> Query -> Array Param -> Aff (db :: DBEffects | e) (Array Foreign)
+queryDB :: forall e. DBConnection -> Query -> Array Param -> Aff (db :: DBEffects | e) Foreign
 queryDB conn query params = makeAff (\e s -> runFn4 _queryDB conn query params s)
