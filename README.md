@@ -1,4 +1,4 @@
-# purescript-node-sqlite3
+# purescript-node-sqlite3 [![Build Status](https://travis-ci.org/justinwoo/purescript-node-sqlite3.svg?branch=master)](https://travis-ci.org/justinwoo/purescript-node-sqlite3)
 
 Really basic wrapper for [node-sqlite3](https://github.com/mapbox/node-sqlite3)
 
@@ -9,6 +9,8 @@ Of course, this is nowhere near done, so please suggest improvements and additio
 `bower i -S purescript-node-sqlite3 && npm i -S sqlite3`
 
 ## Usage
+
+[See the tests!](test/Main.purs)
 
 ```haskell
 launchAff do
