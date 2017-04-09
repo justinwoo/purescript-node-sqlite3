@@ -2,7 +2,7 @@ module SQLite3 where
 
 import Prelude
 import Control.Monad.Aff (Aff, makeAff)
-import Control.Monad.Eff (Eff)
+import Control.Monad.Eff (Eff, kind Effect)
 import Data.Foreign (Foreign)
 import Data.Function.Uncurried (runFn4, runFn2, Fn4, Fn2)
 
@@ -10,8 +10,8 @@ type FilePath = String
 type Query = String
 type Param = String
 
-foreign import data DBConnection :: *
-foreign import data DBEffects :: !
+foreign import data DBConnection :: Type
+foreign import data DBEffects :: Effect
 
 foreign import _newDB :: forall e.
   Fn2
