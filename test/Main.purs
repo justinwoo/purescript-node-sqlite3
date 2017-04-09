@@ -10,8 +10,8 @@ import Control.Monad.Eff.Exception (EXCEPTION)
 import Control.Monad.Except (runExcept)
 import Data.Either (Either(..))
 import Data.Foreign (F)
-import Data.Foreign.Class (class IsForeign, read)
-import Data.Foreign.Generic (defaultOptions, readGeneric)
+import Data.Foreign.Class (class Decode, decode)
+import Data.Foreign.Generic (defaultOptions, genericDecode)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Node.FS (FS)
@@ -30,8 +30,8 @@ derive instance eqRow :: Eq Row
 derive instance grRow :: Generic Row _
 instance shRow :: Show Row where
   show = genericShow
-instance ifRow :: IsForeign Row where
-  read = readGeneric $ defaultOptions {unwrapSingleConstructors = true}
+instance ifRow :: Decode Row where
+  decode = genericDecode $ defaultOptions {unwrapSingleConstructors = true}
 
 type Effects eff =
   ( fs :: FS
@@ -45,7 +45,7 @@ type Effects eff =
 main :: forall eff.
   Eff
     (Effects
-      ( err :: EXCEPTION
+      ( exception :: EXCEPTION
       | eff
       )
     )
@@ -54,7 +54,7 @@ main = launchAff do
   let testPath = "./test.sqlite3"
   (flip when) (unlink testPath) =<< exists testPath
   db <- newDB testPath
-  queryDB db
+  _ <- queryDB db
     """
 CREATE TABLE IF NOT EXISTS mytable
   ( name text primary key unique
@@ -74,7 +74,7 @@ INSERT INTO mytable
   VALUES
   ( 'aa', 'bbbb' )
               """ []
-        results :: F (Array Row) <- read <$> queryDB db
+        results :: F (Array Row) <- decode <$> queryDB db
           """
 SELECT name, detail FROM mytable
           """ []
