@@ -1,10 +1,12 @@
 module SQLite3 where
 
 import Prelude
+
 import Control.Monad.Aff (Aff, makeAff)
 import Control.Monad.Eff (Eff, kind Effect)
 import Data.Foreign (Foreign)
 import Data.Function.Uncurried (runFn4, runFn2, Fn4, Fn2)
+import Data.Monoid (mempty)
 
 type FilePath = String
 type Query = String
@@ -32,8 +34,11 @@ foreign import _queryDB :: forall e.
   (Eff (db :: DBEffects | e) Unit)
 
 newDB :: forall e. FilePath -> Aff (db :: DBEffects | e) DBConnection
-newDB path = makeAff (\e s -> runFn2 _newDB path s)
+newDB path =
+  makeAff \cb -> mempty <$ runFn2 _newDB path (cb <<< pure)
 closeDB :: forall e. DBConnection -> Aff (db :: DBEffects | e) Unit
-closeDB conn = makeAff (\e s -> runFn2 _closeDB conn s)
+closeDB conn =
+  makeAff \cb -> mempty <$ runFn2 _closeDB conn (cb <<< pure)
 queryDB :: forall e. DBConnection -> Query -> Array Param -> Aff (db :: DBEffects | e) Foreign
-queryDB conn query params = makeAff (\e s -> runFn4 _queryDB conn query params s)
+queryDB conn query params =
+  makeAff \cb -> mempty <$ runFn4 _queryDB conn query params (cb <<< pure)

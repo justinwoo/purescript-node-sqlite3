@@ -1,12 +1,12 @@
 module Test.Main where
 
 import Prelude
-import Control.Monad.Aff (Canceler, launchAff)
+
+import Control.Monad.Aff (launchAff_)
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Class (liftEff)
-import Control.Monad.Eff.Exception (EXCEPTION)
 import Control.Monad.Except (runExcept)
 import Data.Either (Either(..))
 import Data.Foreign (F)
@@ -42,15 +42,8 @@ type Effects eff =
   | eff
   )
 
-main :: forall eff.
-  Eff
-    (Effects
-      ( exception :: EXCEPTION
-      | eff
-      )
-    )
-    (Canceler (Effects eff))
-main = launchAff do
+main :: forall eff. Eff (Effects eff) Unit
+main = launchAff_ do
   let testPath = "./test.sqlite3"
   (flip when) (unlink testPath) =<< exists testPath
   db <- newDB testPath
