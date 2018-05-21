@@ -6,18 +6,17 @@ exports._newDB = function (filename, cb) {
   };
 };
 
-exports._closeDB = function (db, cb) {
+exports._closeDB = function (db) {
   return function () {
     db.close();
-    cb()();
   };
 };
 
-exports._queryDB = function (db, query, params, cb) {
+exports._queryDB = function (db, query, params, eb, cb) {
   return function () {
     db.all.apply(db, [query].concat(params.concat(function (err, rows) {
       if (err) {
-        throw err;
+        eb(err)()
       } else {
         cb(rows)();
       }
