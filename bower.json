@@ -12,13 +12,12 @@
     "output"
   ],
   "dependencies": {
-    "purescript-aff": "^4.0.0",
-    "purescript-foreign": "^4.0.0"
+    "purescript-aff": "^5.0.0",
+    "purescript-foreign": "^5.0.0"
   },
   "devDependencies": {
-    "purescript-psci-support": "^3.0.0",
-    "purescript-test-unit": "v13.0.0",
-    "purescript-node-fs-aff": "git://github.com/natefaubion/purescript-node-fs-aff.git#003719d",
-    "purescript-foreign-generic": "^5.0.0"
+    "purescript-test-unit": "justinwoo/purescript-test-unit#compiler/0.12",
+    "purescript-node-fs-aff": "justinwoo/purescript-node-fs-aff#compiler/0.12",
+    "purescript-simple-json": "#compiler/0.12"
   }
 }
