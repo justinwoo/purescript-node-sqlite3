@@ -8,7 +8,7 @@ import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import Node.FS.Aff (exists, unlink)
-import SQLite3 (newDB, queryDB)
+import SQLite3 (newDB, queryDB, queryObjectDB)
 import Simple.JSON (read)
 import Test.Unit (failure, suite, test)
 import Test.Unit.Assert (assert, equal)
@@ -34,8 +34,10 @@ CREATE TABLE IF NOT EXISTS mytable
 
   liftEffect $ runTest do
     suite "SQLite3" do
+
       test ("db connection worked and created " <> testPath) do
         assert "exists testPath" =<< exists testPath
+
       test "we can insert rows and retrieve them" do
         _ <- queryDB db
               """
@@ -48,6 +50,16 @@ INSERT INTO mytable
           """
 SELECT name, detail FROM mytable
           """ []
+        case results of
+          Right (as :: Array Row) ->
+            for_ as \a -> do
+              equal a.name "aa"
+              equal a.detail "bbbb"
+          Left e ->
+            failure $ "row didn't deserialize correctly: " <> show e
+
+      test "we can use queryObjectDB to retrieve records" do
+        results <- read <$> queryObjectDB db "SELECT name, detail FROM mytable WHERE name = ?5" { "5": "aa" }
         case results of
           Right (as :: Array Row) ->
             for_ as \a -> do
