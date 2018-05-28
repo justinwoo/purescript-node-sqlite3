@@ -59,7 +59,7 @@ SELECT name, detail FROM mytable
             failure $ "row didn't deserialize correctly: " <> show e
 
       test "we can use queryObjectDB to retrieve records" do
-        results <- read <$> queryObjectDB db "SELECT name, detail FROM mytable WHERE name = ?5" { "5": "aa" }
+        results <- read <$> queryObjectDB db "SELECT name, detail FROM mytable WHERE name = $asdf" { "$asdf": "aa" }
         case results of
           Right (as :: Array Row) ->
             for_ as \a -> do
