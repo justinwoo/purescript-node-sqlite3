@@ -1,4 +1,13 @@
-module SQLite3 where
+module SQLite3 (
+  FilePath,
+  Query,
+  Param,
+  DBConnection,
+  newDB,
+  closeDB,
+  queryDB,
+  queryObjectDB
+) where
 
 import Prelude
 
