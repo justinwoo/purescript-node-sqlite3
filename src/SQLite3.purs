@@ -1,8 +1,5 @@
 module SQLite3 (
-  FilePath,
-  Query,
-  Param,
-  DBConnection,
+  module InternalExported,
   newDB,
   closeDB,
   queryDB,
@@ -14,49 +11,23 @@ import Prelude
 import Data.Either (Either(..))
 import Effect (Effect)
 import Effect.Aff (Aff, makeAff)
-import Effect.Exception (Error)
 import Effect.Uncurried as EU
 import Foreign (Foreign)
-
-type FilePath = String
-type Query = String
-type Param = String
-
-foreign import data DBConnection :: Type
-
-foreign import _newDB :: EU.EffectFn2 FilePath (EU.EffectFn1 DBConnection Unit) Unit
-
-foreign import _closeDB :: EU.EffectFn1 DBConnection Unit
-
-foreign import _queryDB ::
-  EU.EffectFn5
-    DBConnection
-    Query
-    (Array Param)
-    (EU.EffectFn1 Error Unit)
-    (EU.EffectFn1 Foreign Unit)
-    Unit
-
-foreign import _queryObjectDB :: forall params.
-  EU.EffectFn5
-    DBConnection
-    Query
-    { | params}
-    (EU.EffectFn1 Error Unit)
-    (EU.EffectFn1 Foreign Unit)
-    Unit
+import SQLite3.Internal as Internal
+import SQLite3.Internal (FilePath, Query, Param, DBConnection)
+import SQLite3.Internal (FilePath, Query, Param, DBConnection) as InternalExported
 
 newDB :: FilePath -> Aff DBConnection
 newDB path =
-  makeAff \cb -> mempty <$ EU.runEffectFn2 _newDB path (EU.mkEffectFn1 $ cb <<< pure)
+  makeAff \cb -> mempty <$ EU.runEffectFn2 Internal.newDB path (EU.mkEffectFn1 $ cb <<< pure)
 
 closeDB :: DBConnection -> Effect Unit
-closeDB = EU.runEffectFn1 _closeDB
+closeDB = EU.runEffectFn1 Internal.closeDB
 
 queryDB :: DBConnection -> Query -> Array Param -> Aff Foreign
 queryDB conn query params = makeAff \cb ->
   mempty <$
-    EU.runEffectFn5 _queryDB conn query params
+    EU.runEffectFn5 Internal.queryDB conn query params
       (EU.mkEffectFn1 $ cb <<< Left)
       (EU.mkEffectFn1 $ cb <<< Right)
 
@@ -64,6 +35,6 @@ queryDB conn query params = makeAff \cb ->
 queryObjectDB :: forall params. DBConnection -> Query -> { | params } -> Aff Foreign
 queryObjectDB conn query params = makeAff \cb ->
   mempty <$
-    EU.runEffectFn5 _queryObjectDB conn query params
+    EU.runEffectFn5 Internal.queryObjectDB conn query params
       (EU.mkEffectFn1 $ cb <<< Left)
       (EU.mkEffectFn1 $ cb <<< Right)
