@@ -1,14 +1,14 @@
 var sqlite3 = require("sqlite3");
 
-exports.newDB = function(filename, cb) {
+exports._newDB = function(filename, cb) {
   cb(new sqlite3.Database(filename))();
 };
 
-exports.closeDB = function(db) {
+exports._closeDB = function(db) {
   db.close();
 };
 
-exports.queryDB = function(db, query, params, eb, cb) {
+exports._queryDB = function(db, query, params, eb, cb) {
   db.all.apply(
     db,
     [query].concat(
@@ -23,7 +23,7 @@ exports.queryDB = function(db, query, params, eb, cb) {
   );
 };
 
-exports.queryObjectDB = function(db, query, params, eb, cb) {
+exports._queryObjectDB = function(db, query, params, eb, cb) {
   db.all(query, params, function(err, rows) {
     if (err) {
       eb(err);

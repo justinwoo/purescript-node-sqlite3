@@ -3,10 +3,10 @@ module SQLite3.Internal (
   Query,
   Param,
   DBConnection,
-  newDB,
-  closeDB,
-  queryDB,
-  queryObjectDB
+  _newDB,
+  _closeDB,
+  _queryDB,
+  _queryObjectDB
 ) where
 
 import Prelude
@@ -21,11 +21,11 @@ type Param = String
 
 foreign import data DBConnection :: Type
 
-foreign import newDB :: EU.EffectFn2 FilePath (EU.EffectFn1 DBConnection Unit) Unit
+foreign import _newDB :: EU.EffectFn2 FilePath (EU.EffectFn1 DBConnection Unit) Unit
 
-foreign import closeDB :: EU.EffectFn1 DBConnection Unit
+foreign import _closeDB :: EU.EffectFn1 DBConnection Unit
 
-foreign import queryDB ::
+foreign import _queryDB ::
   EU.EffectFn5
     DBConnection
     Query
@@ -34,7 +34,7 @@ foreign import queryDB ::
     (EU.EffectFn1 Foreign Unit)
     Unit
 
-foreign import queryObjectDB :: forall params.
+foreign import _queryObjectDB :: forall params.
   EU.EffectFn5
     DBConnection
     Query

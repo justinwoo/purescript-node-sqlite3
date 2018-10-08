@@ -19,15 +19,15 @@ import SQLite3.Internal (FilePath, Query, Param, DBConnection) as InternalExport
 
 newDB :: FilePath -> Aff DBConnection
 newDB path =
-  makeAff \cb -> mempty <$ EU.runEffectFn2 Internal.newDB path (EU.mkEffectFn1 $ cb <<< pure)
+  makeAff \cb -> mempty <$ EU.runEffectFn2 Internal._newDB path (EU.mkEffectFn1 $ cb <<< pure)
 
 closeDB :: DBConnection -> Effect Unit
-closeDB = EU.runEffectFn1 Internal.closeDB
+closeDB = EU.runEffectFn1 Internal._closeDB
 
 queryDB :: DBConnection -> Query -> Array Param -> Aff Foreign
 queryDB conn query params = makeAff \cb ->
   mempty <$
-    EU.runEffectFn5 Internal.queryDB conn query params
+    EU.runEffectFn5 Internal._queryDB conn query params
       (EU.mkEffectFn1 $ cb <<< Left)
       (EU.mkEffectFn1 $ cb <<< Right)
 
@@ -35,6 +35,6 @@ queryDB conn query params = makeAff \cb ->
 queryObjectDB :: forall params. DBConnection -> Query -> { | params } -> Aff Foreign
 queryObjectDB conn query params = makeAff \cb ->
   mempty <$
-    EU.runEffectFn5 Internal.queryObjectDB conn query params
+    EU.runEffectFn5 Internal._queryObjectDB conn query params
       (EU.mkEffectFn1 $ cb <<< Left)
       (EU.mkEffectFn1 $ cb <<< Right)
