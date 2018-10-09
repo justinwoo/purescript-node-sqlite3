@@ -9,7 +9,6 @@ module SQLite3 (
 import Prelude
 
 import Data.Either (Either(..))
-import Effect (Effect)
 import Effect.Aff (Aff, makeAff)
 import Effect.Uncurried as EU
 import Foreign (Foreign)
@@ -21,8 +20,8 @@ newDB :: FilePath -> Aff DBConnection
 newDB path =
   makeAff \cb -> mempty <$ EU.runEffectFn2 Internal._newDB path (EU.mkEffectFn1 $ cb <<< pure)
 
-closeDB :: DBConnection -> Effect Unit
-closeDB = EU.runEffectFn1 Internal._closeDB
+closeDB :: DBConnection -> Aff Unit
+closeDB conn = makeAff \cb -> mempty <$ EU.runEffectFn1 Internal._closeDB conn
 
 queryDB :: DBConnection -> Query -> Array Param -> Aff Foreign
 queryDB conn query params = makeAff \cb ->
