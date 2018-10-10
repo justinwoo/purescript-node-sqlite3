@@ -4,8 +4,14 @@ exports._newDB = function(filename, cb) {
   cb(new sqlite3.Database(filename))();
 };
 
-exports._closeDB = function(db) {
-  db.close();
+exports._closeDB = function(db, eb, cb) {
+  db.close(function(err) {
+    if (err) {
+      eb(err);
+    } else {
+      cb();
+    }
+  });
 };
 
 exports._queryDB = function(db, query, params, eb, cb) {

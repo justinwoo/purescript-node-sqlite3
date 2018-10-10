@@ -21,7 +21,10 @@ newDB path =
   makeAff \cb -> mempty <$ EU.runEffectFn2 Internal._newDB path (EU.mkEffectFn1 $ cb <<< pure)
 
 closeDB :: DBConnection -> Aff Unit
-closeDB conn = makeAff \cb -> mempty <$ EU.runEffectFn1 Internal._closeDB conn
+closeDB conn = makeAff \cb ->
+  mempty <$ EU.runEffectFn3 Internal._closeDB conn
+    (EU.mkEffectFn1 $ cb <<< Left)
+    (cb $ Right unit)
 
 queryDB :: DBConnection -> Query -> Array Param -> Aff Foreign
 queryDB conn query params = makeAff \cb ->
