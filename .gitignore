@@ -6,4 +6,5 @@
 /src/.webpack.js
 .psc-ide-port
 test.sqlite3
+test-close.sqlite3
 package-lock.json

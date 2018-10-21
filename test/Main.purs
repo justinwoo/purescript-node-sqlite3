@@ -8,7 +8,7 @@ import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import Node.FS.Aff (exists, unlink)
-import SQLite3 (newDB, queryDB, queryObjectDB)
+import SQLite3 (closeDB, newDB, queryDB, queryObjectDB)
 import Simple.JSON (read)
 import Test.Unit (failure, suite, test)
 import Test.Unit.Assert (assert, equal)
@@ -67,3 +67,10 @@ SELECT name, detail FROM mytable
               equal a.detail "bbbb"
           Left e ->
             failure $ "row didn't deserialize correctly: " <> show e
+
+      test "we can close and re-open a database" do
+        let path = "./test-close.sqlite3"
+        cDb <- newDB path
+        closeDB cDb
+        cDb' <- newDB path
+        closeDB cDb'
