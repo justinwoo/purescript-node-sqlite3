@@ -17,7 +17,7 @@ import Foreign (Foreign)
 
 type FilePath = String
 type Query = String
-type Param = String
+type Param = Foreign
 
 foreign import data DBConnection :: Type
 
