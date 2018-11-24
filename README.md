@@ -21,3 +21,11 @@ launchAff do
 
   closeDB conn
 ```
+
+## Other libraries
+
+In addition to this base library, you might also consider one of these libraries to give you some additional modeling and type safety capabilities:
+
+<https://github.com/Dretch/purescript-querydsl>
+
+<https://github.com/justinwoo/purescript-jajanmen>
