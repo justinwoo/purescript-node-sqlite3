@@ -3,6 +3,5 @@
 /node_modules
 /output
 /src/.webpack.js
-package-lock.json
 test-close.sqlite3
 test.sqlite3
