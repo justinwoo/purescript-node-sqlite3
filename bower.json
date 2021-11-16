@@ -12,12 +12,12 @@
     "output"
   ],
   "dependencies": {
-    "purescript-aff": "^5.0.0",
-    "purescript-foreign": "^5.0.0"
+    "purescript-aff": "^6.0.0",
+    "purescript-foreign": "^6.0.1"
   },
   "devDependencies": {
-    "purescript-test-unit": "justinwoo/purescript-test-unit#compiler/0.12",
-    "purescript-node-fs-aff": "justinwoo/purescript-node-fs-aff#compiler/0.12",
-    "purescript-simple-json": "#compiler/0.12"
+    "purescript-test-unit": "^16.0.0",
+    "purescript-node-fs-aff": "^7.0.0",
+    "purescript-simple-json": "^8.0.0"
   }
 }
