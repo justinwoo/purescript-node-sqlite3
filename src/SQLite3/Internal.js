@@ -1,24 +1,24 @@
-var sqlite3 = require("sqlite3");
+import sqlite3 from "sqlite3";
 
-exports._newDB = function(filename, cb) {
+export function _newDB(filename, cb) {
   cb(new sqlite3.Database(filename))();
-};
+}
 
-exports._closeDB = function(db, eb, cb) {
-  db.close(function(err) {
+export function _closeDB(db, eb, cb) {
+  db.close(function (err) {
     if (err) {
       eb(err);
     } else {
       cb();
     }
   });
-};
+}
 
-exports._queryDB = function(db, query, params, eb, cb) {
+export function _queryDB(db, query, params, eb, cb) {
   db.all.apply(
     db,
     [query].concat(
-      params.concat(function(err, rows) {
+      params.concat(function (err, rows) {
         if (err) {
           eb(err);
         } else {
@@ -27,14 +27,14 @@ exports._queryDB = function(db, query, params, eb, cb) {
       })
     )
   );
-};
+}
 
-exports._queryObjectDB = function(db, query, params, eb, cb) {
-  db.all(query, params, function(err, rows) {
+export function _queryObjectDB(db, query, params, eb, cb) {
+  db.all(query, params, function (err, rows) {
     if (err) {
       eb(err);
     } else {
       cb(rows);
     }
   });
-};
+}

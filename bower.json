@@ -12,12 +12,12 @@
     "output"
   ],
   "dependencies": {
-    "purescript-aff": "^6.0.0",
-    "purescript-foreign": "^6.0.1"
+    "purescript-aff": "^7.0.0",
+    "purescript-foreign": "^7.0.0"
   },
   "devDependencies": {
-    "purescript-test-unit": "^16.0.0",
-    "purescript-node-fs-aff": "^7.0.0",
-    "purescript-simple-json": "^8.0.0"
+    "purescript-test-unit": "^17.0.0",
+    "purescript-node-fs-aff": "^9.0.0",
+    "purescript-simple-json": "^9.0.0"
   }
 }
