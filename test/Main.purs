@@ -7,14 +7,15 @@ import Data.Foldable (for_)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Node.FS.Aff (exists, unlink)
+import Node.FS.Aff (unlink)
+import Node.FS.Sync (exists)
 import SQLite3 (closeDB, newDB, queryDB, queryObjectDB)
 import Simple.JSON (read)
 import Test.Unit (failure, suite, test)
 import Test.Unit.Assert (assert, equal)
 import Test.Unit.Main (runTest)
 
-type Row =
+type TableRow =
   { name :: String
   , detail :: String
   }
@@ -22,7 +23,7 @@ type Row =
 main :: Effect Unit
 main = launchAff_ do
   let testPath = "./test.sqlite3"
-  (flip when) (unlink testPath) =<< exists testPath
+  (flip when) (unlink testPath) =<< liftEffect (exists testPath)
   db <- newDB testPath
   _ <- queryDB db
     """
@@ -36,7 +37,7 @@ CREATE TABLE IF NOT EXISTS mytable
     suite "SQLite3" do
 
       test ("db connection worked and created " <> testPath) do
-        assert "exists testPath" =<< exists testPath
+        assert "exists testPath" =<< liftEffect (exists testPath)
 
       test "we can insert rows and retrieve them" do
         _ <- queryDB db
@@ -51,7 +52,7 @@ INSERT INTO mytable
 SELECT name, detail FROM mytable
           """ []
         case results of
-          Right (as :: Array Row) ->
+          Right (as :: Array TableRow) ->
             for_ as \a -> do
               equal a.name "aa"
               equal a.detail "bbbb"
@@ -61,7 +62,7 @@ SELECT name, detail FROM mytable
       test "we can use queryObjectDB to retrieve records" do
         results <- read <$> queryObjectDB db "SELECT name, detail FROM mytable WHERE name = $asdf" { "$asdf": "aa" }
         case results of
-          Right (as :: Array Row) ->
+          Right (as :: Array TableRow) ->
             for_ as \a -> do
               equal a.name "aa"
               equal a.detail "bbbb"
