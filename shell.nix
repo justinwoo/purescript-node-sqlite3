@@ -13,8 +13,9 @@ let
 in
 pkgs.mkShell {
   buildInputs = [
-    (easy-ps.purs-0_15_0.overrideAttrs (_: {
+    (easy-ps.purs-0_15_0.overrideAttrs (old: {
       version = "v0.15.4";
+      installPhase = builtins.replaceStrings [ "patchelf --interpreter" ] [ "patchelf --no-sort --interpreter" ] old.installPhase;
       src = pkgs.fetchurl (
         if pkgs.stdenv.isDarwin then {
           url = "https://github.com/purescript/purescript/releases/download/v0.15.4/macos.tar.gz";
