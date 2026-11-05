@@ -1,0 +1,22 @@
+package:
+  name: node-sqlite3
+  publish:
+    version: 8.0.1
+    license: MIT
+    location:
+      githubOwner: justinwoo
+      githubRepo: purescript-node-sqlite3
+  dependencies:
+    - aff: ">=7.0.0 <9.0.0"
+    - effect: ">=4.0.0 <5.0.0"
+    - either: ">=6.0.0 <7.0.0"
+    - exceptions: ">=6.0.0 <7.0.0"
+    - foreign: ">=7.0.0 <8.0.0"
+    - prelude: ">=6.0.0 <7.0.0"
+  test:
+    main: Test.Main
+    dependencies:
+      - node-fs: ">=9.0.0 <10.0.0"
+      - simple-json: ">=9.0.0 <10.0.0"
+      - test-unit: ">=17.0.0 <18.0.0"
+workspace: {}
