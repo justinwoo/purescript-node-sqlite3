@@ -1,4 +1,6 @@
 /bower_components/
+/.spago/
+/spago.lock
 /node_modules/
 /.pulp-cache/
 /output/
