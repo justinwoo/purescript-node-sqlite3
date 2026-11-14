@@ -6,7 +6,7 @@ Of course, this is nowhere near done, so please suggest improvements and additio
 
 ## Installation
 
-`bower i -S purescript-node-sqlite3 && npm i -S sqlite3`
+`spago install node-sqlite3 && npm i -S sqlite3`
 
 ## Usage
 
